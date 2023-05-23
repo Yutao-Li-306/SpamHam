@@ -1,15 +1,18 @@
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
+from gensim.models import Word2Vec
+from sklearn.metrics import classification_report
 
 # open datasets and concatentate data together
-df_1 = pd.read_csv('lingSpam.csv', usecols=["Body", "Label"])
-df_2 = pd.read_csv('enronSpamSubset.csv', usecols=["Body", "Label"])
-df_3 = pd.read_csv('completeSpamAssassin.csv', usecols=["Body", "Label"])
+df = pd.read_csv('lingSpam.csv', usecols=["Body", "Label"])
+#df_2 = pd.read_csv('enronSpamSubset.csv', usecols=["Body", "Label"])
+#df_3 = pd.read_csv('completeSpamAssassin.csv', usecols=["Body", "Label"])
 
-df = pd.concat([df_1, df_2, df_3], ignore_index=True)
+#df = pd.concat([df_1, df_2, df_3], ignore_index=True)
 df = df.dropna()
 df.head()
 
@@ -27,17 +30,21 @@ y = df["Label"]
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Initialize the CountVectorizer
-vectorizer = CountVectorizer()
+# Tokenize the text data
+tokenized_data_train = [text.split() for text in X_train]
+tokenized_data_test = [text.split() for text in X_test]
 
-# Fit and transform the training data
-X_train_features = vectorizer.fit_transform(X_train)
+# Train Word2Vec model
+word2vec_model = Word2Vec(sentences=tokenized_data_train, vector_size=100, window=5, min_count=1, workers=4)
 
-# Transform the testing data
-X_test_features = vectorizer.transform(X_test)
+# Convert training data to Word2Vec vectors
+X_train_features = np.array([np.mean([word2vec_model.wv[word] for word in text], axis=0) for text in tokenized_data_train])
+
+# Convert testing data to Word2Vec vectors
+X_test_features = np.array([np.mean([word2vec_model.wv[word] for word in text], axis=0) for text in tokenized_data_test])
 
 # Initialize the SVM classifier
-svm = SVC()
+svm = SVC(kernel='rbf')
 
 # Train the SVM model
 svm.fit(X_train_features, y_train)
@@ -48,5 +55,7 @@ y_pred = svm.predict(X_test_features)
 # Calculate the accuracy score
 accuracy = accuracy_score(y_test, y_pred)
 print("Accuracy:", accuracy)
+print("Classification Report: ")
+#print(classification_report(y_test, svm.predict(y_test)))
 
 
