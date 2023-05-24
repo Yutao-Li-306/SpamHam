@@ -40,5 +40,40 @@ NB_classifier.fit(X_train,y_train)
 # running the model on test set
 y_predict_test=NB_classifier.predict(X_test)
 
+print("MultinomialNB")
 # print out the results using classification_report
 print(classification_report(y_test,y_predict_test))
+
+print("ComplementNB")
+# compare to ComplementNB
+from sklearn.naive_bayes import ComplementNB
+
+complement_NB = ComplementNB()
+
+complement_NB.fit(X_train,y_train)
+
+# running the model on test set
+y_predict_test=complement_NB.predict(X_test)
+
+# print out the results using classification_report
+
+print(classification_report(y_test,y_predict_test))
+
+print("BernoulliNB")
+# compare to BernoulliNB
+from sklearn.naive_bayes import BernoulliNB
+
+BNB = BernoulliNB()
+
+BNB.fit(X_train,y_train)
+
+# running the model on test set
+y_predict_test=BNB.predict(X_test)
+
+# print out the results using classification_report
+
+print(classification_report(y_test,y_predict_test))
+
+# differs from multinomial NB’s rule in that it explicitly penalizes the non-occurrence of
+# of a feature i that is an indicator for class y, 
+# where the multinomial variant would simply ignore a non-occurring feature.
