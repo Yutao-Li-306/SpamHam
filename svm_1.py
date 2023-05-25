@@ -16,25 +16,33 @@ df_3 = pd.read_csv('email_spam_dataset/completeSpamAssassin.csv', usecols=["Body
 
 df = pd.concat([df_1, df_2, df_3], ignore_index=True)
 df = df.dropna()
-df.head()
+# df.head()
 
 # get rid of "Subject: " in front of every email
 df["Body"] = [text[9:].lower() for text in df["Body"]]
-df.head()
+# df.head()
 
 # label 0 = not spam, 1 = spam
 label = ["Not Spam", "Spam"]
 label_counts = df["Label"].value_counts()
 
 X = df["Body"]
+
+# print(X)
+# print(type(X))
+
 y = df["Label"]
 
+# print(X[0])
+# print(type(X[0]))
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 #Convert the text data into numerical features using TF-IDF vectorization:
 vectorizer = TfidfVectorizer()
+# print(type(X_train))
 X_train = vectorizer.fit_transform(X_train)
+# print(type(X_train))
 X_test = vectorizer.transform(X_test)
 
 
