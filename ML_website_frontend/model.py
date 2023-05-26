@@ -67,6 +67,8 @@ svm.fit(X_train, y_train)
 # Saving model to disk
 pickle.dump(svm, open('model.pkl','wb'))
 
+pickle.dump(vectorizer, open('vectorizer.pkl','wb'))
+
 '''
 # Loading model to compare the results
 model = pickle.load(open('model.pkl','rb'))
