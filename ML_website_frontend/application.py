@@ -18,32 +18,19 @@ def predict():
     For rendering results on HTML GUI
     '''
 
-    # print("eroor here 1")
     # grabbing the input values from the form
     email = str(request.form['email'])
-    # print("error here 2")
-    # int_features = [int(x) for x in request.form.values()]
-    # final_features = [np.array(int_features)]
-    # probably have to put the email into a pandas dataframe
 
-    # if the above doesn't solve the problem,
-    # may have to find a way to save the vectorizer created from model.py
-
-    # problem is in line 32
-    # becomes a list of 1 element, which is a string
-    # need to make it a list of 1 element, which is a list of strings
+    # transforming the input into numerical features using pre-loaded vectorizer
     input = vectorizer.transform([email])
 
-    # print("error here 2.9")
+    # predicting the input using pre-loaded model
     prediction = model.predict(input)
 
-    # print("error here 3")
     if prediction[0] == 1:
         output = "Spam"
     else:
         output = "Ham (Not Spam)"
-
-    #output = round(prediction[0], 2)
 
     return render_template('index.html', prediction_text=output)
 
