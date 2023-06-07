@@ -27,6 +27,6 @@ By default, flask will run on port 5000.
 
 You should be able to view the homepage.
 
-Enter valid numerical values in all 3 input boxes and hit Predict.
+Enter a valid email in the input box and hit predit.
 
-If everything goes well, you should be able to see the predcited salary vaule on the HTML page! check the output here: http://127.0.0.1:5000/predict
+If everything goes well, you should be able to see whether or not the email is a ham email or a span email. Check the output here: http://127.0.0.1:5000/predict
