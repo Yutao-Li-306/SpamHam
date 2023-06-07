@@ -14,13 +14,13 @@ Running the project
 
     Ensure that you are in the ML_website_frontend directory. Create the machine learning model by running below command from command prompt -
 
-python model.py or python3 model.py
+    python model.py or python3 model.py
 
 This would create a serialized version of our model into a file model.pkl and vectorizer.pkl
 
     Run application.py using below command to start Flask API
 
-python application.py or python3 application.py
+    python application.py or python3 application.py
 
 By default, flask will run on port 5000.
 
